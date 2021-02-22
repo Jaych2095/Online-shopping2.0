@@ -1,0 +1,48 @@
+<div *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+    <h2>Welcome</h2>
+    <button class="btn btn-primary" style="float: right;" (click)="onlogout()">Log Out</button>
+    <button class="btn btn-primary" style="float: left;" (click)="showmycart()">My Cart</button>
+    <br>
+    <br>
+    <div>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search"
+          (input)="resetPage()"
+          [(ngModel)]="searchTitle">
+      </div>
+    <br>
+   
+    <table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Action</th>
+    </tr>
+    <tbody>
+    <tr *ngFor="let data of userdata | SearchFilterPipe: searchTitle | paginate: { itemsPerPage: 10, currentPage: p },let i=index">
+        <td>{{data.id}}</td>  
+        <td>{{data.title}}</td>
+        <td>{{data.description}}</td>  
+        <td>{{data.category}}</td>
+        <td>{{data.price}}</td>
+        <td><img src="{{data.image}}" width="75" height="75" /></td>   
+        <td><button class="btn btn-primary" (click)="handleAddToCart(index)">Add to Cart</button></td>
+        <td><button class="btn btn-primary" (click)="onEdit(index)">Edit</button></td>
+        <td><button class="btn btn-primary" (click)="onDelete(index)">Delete</button></td>
+        
+    </tr>
+    </tbody>
+    
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
